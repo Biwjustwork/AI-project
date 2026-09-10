@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { Calendar as CalendarIcon, ChevronRight } from "lucide-react";
+import { Calendar as CalendarIcon, Sparkles, ChevronRight } from "lucide-react";
 
 interface DateFilterBarProps {
   currentDate: string;
@@ -58,21 +58,25 @@ export function DateFilterBar({ currentDate }: DateFilterBarProps) {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-xs mb-8">
+    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-4 sm:p-5 mb-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 text-indigo-600 text-xs font-bold uppercase tracking-wider mb-1">
-            <CalendarIcon className="w-3.5 h-3.5" />
-            เลือกวันที่ต้องการจอง
+        <div className="flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-700 flex items-center justify-center border border-amber-500/20">
+            <CalendarIcon className="w-5 h-5" />
           </div>
-          <h2 className="text-base sm:text-lg font-bold text-slate-900">
-            {displayThaiDate(currentDate)}
-          </h2>
+          <div>
+            <div className="text-[11px] font-bold uppercase tracking-wider text-amber-800">
+              รอบวันที่ต้องการจองห้อง
+            </div>
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-900">
+              {displayThaiDate(currentDate)}
+            </h2>
+          </div>
         </div>
 
         {/* Quick Date Chips & Date Picker */}
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex items-center gap-1 bg-slate-100/80 p-1 rounded-2xl border border-slate-200/60">
             {quickDates.map((item) => {
               const isSelected = currentDate === item.value;
               return (
@@ -80,10 +84,10 @@ export function DateFilterBar({ currentDate }: DateFilterBarProps) {
                   key={item.value}
                   type="button"
                   onClick={() => handleDateChange(item.value)}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+                  className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all duration-150 cursor-pointer ${
                     isSelected
-                      ? "bg-white text-indigo-700 shadow-xs"
-                      : "text-slate-600 hover:text-slate-900"
+                      ? "bg-slate-900 text-amber-400 shadow-sm"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
                   }`}
                 >
                   {item.label}
@@ -99,7 +103,7 @@ export function DateFilterBar({ currentDate }: DateFilterBarProps) {
               value={currentDate}
               min={todayStr}
               onChange={(e) => handleDateChange(e.target.value)}
-              className="px-3 py-1.5 text-xs font-medium rounded-xl border border-slate-300 text-slate-700 bg-white hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-all cursor-pointer"
+              className="px-3.5 py-2 text-xs font-semibold rounded-2xl border border-slate-300 text-slate-800 bg-white hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-600 transition-all cursor-pointer shadow-2xs"
             />
           </div>
         </div>

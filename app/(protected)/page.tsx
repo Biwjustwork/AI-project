@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { Room, Booking } from "@/types";
 import { RoomCard } from "@/components/RoomCard";
 import { DateFilterBar } from "@/components/DateFilterBar";
-import { BookOpen, AlertCircle, Info, Sparkles } from "lucide-react";
+import { Library, AlertCircle, Sparkles, Clock, ShieldAlert, CheckCircle, Volume2, BookOpenCheck } from "lucide-react";
 
 interface HomePageProps {
   searchParams: {
@@ -61,36 +61,54 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
   return (
     <div className="space-y-8">
-      {/* Hero / Header Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-900 via-indigo-800 to-slate-900 text-white p-6 sm:p-10 shadow-lg shadow-indigo-950/20">
-        <div className="relative z-10 max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-700/60 border border-indigo-500/30 text-indigo-200 text-xs font-semibold mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-indigo-300" />
-            จองห้องอ่านหนังสือและห้องศึกษากลุ่ม
+      {/* Library Hero Banner */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white p-7 sm:p-10 shadow-xl border border-slate-800">
+        <div className="relative z-10 max-w-3xl">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold mb-4">
+            <Library className="w-4 h-4 text-amber-400" />
+            สำนักหอสมุดกลาง มหาวิทยาลัย (Central Library Portal)
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-            พื้นที่อ่านหนังสือและทำงานกลุ่ม
+
+          <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">
+            พื้นที่อ่านหนังสือและห้องศึกษากลุ่ม
           </h1>
-          <p className="text-sm sm:text-base text-indigo-200/90 mt-2 leading-relaxed">
-            เลือกห้องและรอบเวลาที่ต้องการเพื่อจองพื้นที่อ่านหนังสือส่วนตัวหรือห้องสัมมนากลุ่มได้อย่างสะดวกรวดเร็ว
+          <p className="text-sm sm:text-base text-slate-300 mt-2.5 leading-relaxed">
+            จองพื้นที่สำหรับการค้นคว้า ทำงานวิจัย ติวหนังสือ และประชุมโครงงานวิชาการได้อย่างสะดวกและเป็นระเบียบ
           </p>
+
+          {/* Library Info Badges */}
+          <div className="flex flex-wrap items-center gap-3 pt-5 text-xs">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700/80 text-amber-300 font-semibold">
+              <Clock className="w-4 h-4 text-amber-400" />
+              เปิดบริการ: 08:30 - 20:00 น.
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700/80 text-emerald-300 font-semibold">
+              <CheckCircle className="w-4 h-4 text-emerald-400" />
+              พร้อมให้บริการ {rooms.length} ห้อง
+            </div>
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700/80 text-slate-300">
+              <Volume2 className="w-4 h-4 text-slate-400" />
+              โปรดรักษาความสงบในพื้นที่ส่วนรวม
+            </div>
+          </div>
         </div>
 
-        {/* Decorative background shape */}
-        <div className="absolute right-0 top-0 -mt-12 -mr-12 w-80 h-80 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
+        {/* Decorative background ambient light */}
+        <div className="absolute right-0 top-0 -mt-10 -mr-10 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute left-1/2 bottom-0 -mb-16 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
       </div>
 
       {/* Date Filter Bar */}
       <DateFilterBar currentDate={selectedDate} />
 
-      {/* Database Error / Setup Guide Fallback */}
+      {/* Database Setup Alert */}
       {roomsError && (
-        <div className="p-5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 flex items-start gap-3.5">
-          <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-          <div className="text-sm space-y-1">
-            <p className="font-bold">ยังไม่ได้เชื่อมต่อฐานข้อมูล Supabase หรือยังไม่ได้รัน Migration</p>
-            <p className="text-amber-800 text-xs">
-              กรุณานำโค้ดในไฟล์ <code className="bg-amber-100 px-1.5 py-0.5 rounded font-mono">supabase/schema.sql</code> และ <code className="bg-amber-100 px-1.5 py-0.5 rounded font-mono">supabase/seed.sql</code> ไปรันใน Supabase SQL Editor และตั้งค่า <code className="bg-amber-100 px-1.5 py-0.5 rounded font-mono">.env.local</code>
+        <div className="p-6 rounded-3xl bg-amber-50 border border-amber-200 text-amber-950 flex items-start gap-3.5 shadow-sm">
+          <AlertCircle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
+          <div className="text-sm space-y-1.5">
+            <p className="font-extrabold text-base text-amber-900">ยังไม่ได้เชื่อมต่อฐานข้อมูล Supabase</p>
+            <p className="text-amber-800 text-xs leading-relaxed">
+              กรุณานำโค้ดในไฟล์ <code className="bg-amber-100/90 text-amber-950 px-2 py-0.5 rounded font-mono font-bold">supabase/schema.sql</code> และ <code className="bg-amber-100/90 text-amber-950 px-2 py-0.5 rounded font-mono font-bold">supabase/seed.sql</code> ไปรันใน Supabase SQL Editor และระบุคีย์ใน <code className="bg-amber-100/90 text-amber-950 px-2 py-0.5 rounded font-mono font-bold">.env.local</code>
             </p>
           </div>
         </div>
@@ -98,34 +116,36 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
       {/* Rooms Grid */}
       {rooms.length === 0 && !roomsError ? (
-        <div className="text-center py-16 px-4 bg-white rounded-2xl border border-slate-200">
-          <BookOpen className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-          <h3 className="text-base font-bold text-slate-800">ไม่พบข้อมูลห้องอ่านหนังสือ</h3>
-          <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-            กรุณารันไฟล์ <code className="font-mono bg-slate-100 px-1.5 py-0.5 rounded">supabase/seed.sql</code> บน Supabase เพื่อสร้างข้อมูลห้องเริ่มต้น
+        <div className="text-center py-20 px-4 bg-white rounded-3xl border border-slate-200 shadow-sm">
+          <div className="w-16 h-16 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center mx-auto mb-4 border border-amber-200">
+            <Library className="w-8 h-8" />
+          </div>
+          <h3 className="text-lg font-extrabold text-slate-900">ไม่พบข้อมูลห้องอ่านหนังสือ</h3>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-sm mx-auto">
+            กรุณารันไฟล์ <code className="font-mono bg-slate-100 px-2 py-0.5 rounded">supabase/seed.sql</code> เพื่อโหลดข้อมูลห้องอ่านหนังสือเริ่มต้น
           </p>
         </div>
       ) : (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-slate-900 tracking-tight flex items-center gap-2">
-              <span>ห้องอ่านหนังสือทั้งหมด</span>
-              <span className="text-xs font-normal text-slate-500">
-                ({rooms.length} ห้อง)
+        <div className="space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <h2 className="text-xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2.5">
+              <span>ห้องอ่านหนังสือและห้องศึกษากลุ่ม</span>
+              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700">
+                {rooms.length} ห้อง
               </span>
             </h2>
-            <div className="flex items-center gap-3 text-xs text-slate-500">
+            <div className="flex items-center gap-4 text-xs font-semibold text-slate-600 bg-white px-3.5 py-2 rounded-2xl border border-slate-200 shadow-2xs">
               <span className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" />
-                ว่าง
+                ว่าง (กดจองได้)
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-rose-400 inline-block" />
-                ไม่ว่าง
+                <span className="w-2.5 h-2.5 rounded-full bg-slate-300 inline-block" />
+                เต็มแล้ว
               </span>
               <span className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-indigo-600 inline-block" />
-                คุณจองแล้ว
+                การจองของคุณ
               </span>
             </div>
           </div>

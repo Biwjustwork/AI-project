@@ -110,6 +110,11 @@ npm run dev
 ```
 เปิดบราวเซอร์ที่ `http://localhost:3000`
 
+### 5. บัญชีสำหรับทดสอบระบบ (Test User Account)
+สามารถใช้บัญชีทดสอบนี้เข้าสู่ระบบเพื่อตรวจประเมินได้ทันที:
+- **Email:** `test@local.com`
+- **Password:** `123456789`
+
 ---
 
 ## 🌐 การ Deploy บน Vercel (Production)

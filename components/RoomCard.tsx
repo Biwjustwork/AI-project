@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Room, TimeSlot } from "@/types";
 import { TimeSlotGrid } from "./TimeSlotGrid";
 import { BookingModal } from "./BookingModal";
-import { Users, MapPin, Sparkles } from "lucide-react";
+import { Users, MapPin, Sparkles, VolumeX, Users2, Video, ShieldCheck } from "lucide-react";
 
 interface RoomCardProps {
   room: Room;
@@ -27,30 +27,60 @@ export function RoomCard({
     setIsModalOpen(true);
   };
 
+  // Helper for Academic Zone Badge
+  const getZoneBadge = () => {
+    if (room.capacity <= 2) {
+      return {
+        label: "โซนเงียบสงบ (Silent Zone)",
+        icon: VolumeX,
+        color: "bg-teal-50 text-teal-800 border-teal-200",
+      };
+    }
+    if (room.name.includes("มัลติมีเดีย") || room.capacity >= 10) {
+      return {
+        label: "โซนมัลติมีเดีย & นำเสนอ (Media Hub)",
+        icon: Video,
+        color: "bg-purple-50 text-purple-800 border-purple-200",
+      };
+    }
+    return {
+      label: "โซนทำงานกลุ่ม (Collaboration Zone)",
+      icon: Users2,
+      color: "bg-amber-50 text-amber-900 border-amber-200",
+    };
+  };
+
+  const zone = getZoneBadge();
+  const ZoneIcon = zone.icon;
+
   return (
     <>
-      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col justify-between">
+      <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between group">
         {/* Room Header Info */}
-        <div className="p-5 sm:p-6 border-b border-slate-100">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2.5">
-            <h3 className="font-bold text-lg text-slate-900 tracking-tight">
-              {room.name}
-            </h3>
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 text-xs font-semibold border border-indigo-100">
-                <Users className="w-3.5 h-3.5" />
-                {room.capacity} ที่นั่ง
-              </span>
-            </div>
+        <div className="p-6 border-b border-slate-100">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold border ${zone.color}`}>
+              <ZoneIcon className="w-3.5 h-3.5" />
+              {zone.label}
+            </span>
+
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 text-amber-300 text-xs font-bold shadow-xs">
+              <Users className="w-3.5 h-3.5" />
+              ความจุ {room.capacity} ที่นั่ง
+            </span>
           </div>
 
-          <div className="flex items-center gap-1.5 text-xs text-slate-500 mb-3">
-            <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+          <h3 className="font-extrabold text-lg text-slate-900 tracking-tight group-hover:text-amber-700 transition-colors mb-1.5">
+            {room.name}
+          </h3>
+
+          <div className="flex items-center gap-1.5 text-xs font-medium text-slate-500 mb-3.5">
+            <MapPin className="w-4 h-4 text-amber-600 shrink-0" />
             <span>{room.location}</span>
           </div>
 
           {room.description && (
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4 line-clamp-2">
               {room.description}
             </p>
           )}
@@ -61,9 +91,9 @@ export function RoomCard({
               {room.amenities.map((amenity, idx) => (
                 <span
                   key={idx}
-                  className="inline-flex items-center gap-1 text-[11px] font-medium bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md border border-slate-200/60"
+                  className="inline-flex items-center gap-1 text-[11px] font-medium bg-slate-100/90 text-slate-700 px-2.5 py-1 rounded-xl border border-slate-200"
                 >
-                  <Sparkles className="w-2.5 h-2.5 text-indigo-500" />
+                  <Sparkles className="w-3 h-3 text-amber-500" />
                   {amenity}
                 </span>
               ))}
@@ -72,7 +102,7 @@ export function RoomCard({
         </div>
 
         {/* Time Slot Picker Grid */}
-        <div className="p-5 sm:p-6 bg-slate-50/50">
+        <div className="p-6 bg-slate-50/70 border-t border-slate-100/80">
           <TimeSlotGrid
             bookedSlots={bookedSlots}
             myBookedSlots={myBookedSlots}
